@@ -23,5 +23,6 @@ namespace GMTKGameJam2022.Managers
                 DontDestroyOnLoad(this);
             }
         }
+        
     }
 }
