@@ -18,7 +18,7 @@ public class Die : MonoBehaviour
             renderer.material.SetTexture("_MainTex", texture);
         } else
         {
-            Debug.Log("Die / Cube / Die.cs / MeshRenderer not found");
+            Debug.LogError("Die / Cube / Die.cs / MeshRenderer not found");
         }
     }
 
@@ -26,12 +26,15 @@ public class Die : MonoBehaviour
     {
         if(collision.gameObject.tag == "Player")
         {
-            //GameManager gm = GameObject.find("GameManager").GetComponent<GameManager>();
-            //if(gm != null){
-            //  gm.OnPlayerCollideWithDie(this.id);
-            //} else {
-            //  Debug.Log("On Collision with Die Cube, the Game Manager was not found");
-            //}
+            GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+            if (gm != null)
+            {
+                gm.OnPlayerCollideWithDie(this.id);
+            }
+            else
+            {
+                Debug.LogWarning("On Collision with Die Cube, the Game Manager was not found");
+            }
         }
     }
 }
