@@ -9,9 +9,11 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private float speed = 1;
     [SerializeField] private float rotationSpeed = 100;
+    [SerializeField] private float dieY = -10;
     private GameControls inputActions;
     private InputAction turn;
     private Rigidbody rigidBody;
+    public event Action FallOutOfBounce;
 
     private void Awake()
     {
@@ -35,8 +37,6 @@ public class PlayerController : MonoBehaviour
     private void TurnCharacter(InputAction.CallbackContext obj)
     {
         Debug.Log("Performed" + obj.ReadValue<Vector3>());
-
-
     }
 
     private void OnDisable()
@@ -53,5 +53,10 @@ public class PlayerController : MonoBehaviour
         Vector3 movement = transform.forward.normalized * speed;
         movement.y = ySpeed;
         rigidBody.velocity = movement;
+    }
+
+    protected void OnFallOutOfBounce()
+    {
+        FallOutOfBounce?.Invoke();
     }
 }
