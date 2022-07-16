@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 515744138353216347}
   - component: {fileID: 515744138353216346}
   - component: {fileID: 515744138353216341}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Die_02
   m_TagString: Dice
   m_Icon: {fileID: 0}
@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   texture: {fileID: 2800000, guid: 24a07056f080b5f43bb64ec11eaaf65e, type: 3}
-  id: 
+  id: 4f982101-fddc-449a-bc3f-5d1c41d246a7
   typeName: type_die_2
 --- !u!54 &515744138353216341
 Rigidbody:
