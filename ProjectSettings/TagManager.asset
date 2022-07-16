@@ -8,6 +8,7 @@ TagManager:
   - Wall
   - GameWall
   - Dice
+  - UI
   layers:
   - Default
   - TransparentFX

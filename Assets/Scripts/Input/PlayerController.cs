@@ -62,13 +62,12 @@ public class PlayerController : MonoBehaviour
     {
         speedMultiplier += 0.1f;
     }
-
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision other)
     {
-        if (other.CompareTag("GameWall"))
+        if (other.collider.CompareTag("GameWall"))
         {
             //Rotates the player by 180°
             Vector3 eulerRotation = transform.rotation.eulerAngles;
-            transform.rotation = Quaternion.Euler(eulerRotation.x, 90 + eulerRotation.y + turn.ReadValue<Vector3>().x * rotationSpeed * Time.deltaTime * speedMultiplier, 0);        }
+            transform.rotation = Quaternion.Euler(eulerRotation.x, 180 + eulerRotation.y + turn.ReadValue<Vector3>().x * rotationSpeed * Time.deltaTime * speedMultiplier, 0);        }
     }
 }
