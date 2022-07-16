@@ -488,7 +488,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGameObject: {fileID: 246875795}
-  rotationSpeed: 32
+  rotationSpeed: 60
 --- !u!1 &317586479
 GameObject:
   m_ObjectHideFlags: 0
@@ -1326,7 +1326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGameObject: {fileID: 506917258}
-  rotationSpeed: -55
+  rotationSpeed: 60
 --- !u!1 &594088085
 GameObject:
   m_ObjectHideFlags: 0
@@ -1615,7 +1615,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGameObject: {fileID: 720573163}
-  rotationSpeed: -55
+  rotationSpeed: 60
 --- !u!1 &782222629
 GameObject:
   m_ObjectHideFlags: 0
@@ -2176,7 +2176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGameObject: {fileID: 906399827}
-  rotationSpeed: -300
+  rotationSpeed: 60
 --- !u!1 &907617446
 GameObject:
   m_ObjectHideFlags: 0
@@ -3594,7 +3594,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGameObject: {fileID: 1214522840}
-  rotationSpeed: -2000
+  rotationSpeed: 60
 --- !u!1001 &1309154213
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3682,7 +3682,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGameObject: {fileID: 1361548629}
-  rotationSpeed: 200
+  rotationSpeed: 60
 --- !u!1 &1365470475
 GameObject:
   m_ObjectHideFlags: 0
@@ -3899,7 +3899,7 @@ SpriteRenderer:
   m_Size: {x: 10.24, y: 10.24}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1001 &1385120501
@@ -3985,7 +3985,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGameObject: {fileID: 1620357244}
-  rotationSpeed: 45
+  rotationSpeed: 60
 --- !u!1 &1643591679 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6899678704759800083, guid: 297cfbc1ab9f9864eab1289bbfb775ff, type: 3}
@@ -4004,7 +4004,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGameObject: {fileID: 1643591679}
-  rotationSpeed: -120
+  rotationSpeed: 60
 --- !u!1 &1653929059
 GameObject:
   m_ObjectHideFlags: 0
@@ -4223,7 +4223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGameObject: {fileID: 1666692909}
-  rotationSpeed: -60
+  rotationSpeed: 60
 --- !u!1 &1668396954 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2242816485369857499, guid: 0edf7e0e76422814f9587adc8f4a746d, type: 3}
@@ -4242,7 +4242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGameObject: {fileID: 1668396954}
-  rotationSpeed: -200
+  rotationSpeed: 60
 --- !u!1 &1729202422
 GameObject:
   m_ObjectHideFlags: 0
