@@ -17,7 +17,6 @@ using UnityEngine;
     #endregion
 
     #region level settings
-    private float startTime = 0;
     private float roundTime = 300;
     private bool isRoundActive = true;
     public uint startupDiceCount = 1;
