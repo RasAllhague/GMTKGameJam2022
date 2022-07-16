@@ -1,0 +1,37 @@
+Game Concept
+Besnik
+Lukas
+Nick
+
+Programming
+Lukas
+Nick
+
+Playermovement and Behaviour
+Nick
+
+Background Music
+Lukas
+
+Player Design
+Besnik Celaj
+
+Texture Design
+Besnik Celaj
+
+UI Design
+Besnik Celaj
+Nick
+
+Level Design
+XXX
+
+Credit Design
+Besnik Celaj
+
+Menu Design
+
+
+Special Thanks to:
+
+http://freesoundeffect.net/ - for offering Soundeffects that matched our vision.
