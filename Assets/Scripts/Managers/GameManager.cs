@@ -14,6 +14,7 @@ namespace GMTKGameJam2022.Managers
         private TextMeshProUGUI time;
         private TextMeshProUGUI score;
         private DiceHintVisualizer diceHintVisualizer;
+        private GameObject player;
         #endregion
 
         #region player data
@@ -22,6 +23,7 @@ namespace GMTKGameJam2022.Managers
 
         #region level settings
         private float roundTime = 300;
+        private bool isRoundActive = true;
         public uint startupDiceCount = 1;
         public uint respawnDiceCount = 0;
         public int spawnDiceXMin = 0;
@@ -55,6 +57,7 @@ namespace GMTKGameJam2022.Managers
             time = GameObject.Find("Time").GetComponent<TextMeshProUGUI>();
             score = GameObject.Find("Score").GetComponent<TextMeshProUGUI>();
             diceHintVisualizer = GameObject.Find("DiceHintVisualizer").GetComponent<DiceHintVisualizer>();
+            player = GameObject.Find("Player");
 
             if(time == null)
             {
@@ -68,6 +71,10 @@ namespace GMTKGameJam2022.Managers
             {
                 Debug.LogError("GameManager: UI DiceHintVisualizer not found");
             }
+            if(player == null)
+            {
+                Debug.LogError("GameManager: Player not found");
+            }
 
             System.Random rnd = new System.Random();
             List<GameObject> diceListRandomized = dice.OrderBy(item => rnd.Next()).ToList();
@@ -75,34 +82,74 @@ namespace GMTKGameJam2022.Managers
             diceIDsInUse = new List<string>();
             diceTypesInUse = new List<string>();
 
-            string nextTarget = "";
             for (int i = 0; i < startupDiceCount; i++)
             {
                 GameObject obj = diceListRandomized[i];
-                string uuid = System.Guid.NewGuid().ToString();
-                obj.GetComponent<Die>().id = uuid;
-                nextTarget = uuid;
-
-                diceIDsInUse.Add(uuid);
-                diceTypesInUse.Add(obj.GetComponent<Die>().typeName);
-
-                Instantiate(obj, new Vector3(Random.Range(spawnDiceXMin, spawnDiceXMax+1), Random.Range(2, 5), Random.Range(spawnDiceYMin, spawnDiceYMax+1)), Quaternion.identity);
+                SpawnDie(obj);
             }
-            nextTargetID = nextTarget;
 
-            diceHintVisualizer.SetDice(diceListRandomized[(int)startupDiceCount - 1]);
+            FindNextTarget(new string[] { });
             SetScore();
+
+            player.GetComponent<PlayerController>().FallOutOfBounce += PlayerFellOutOfBounds;
         }
 
         private void Update()
         {
-            // Coroutine
-            //time.text = "Time: " + ((startTime + roundTime) - Time.time).ToString("0.0");
+            if (isRoundActive)
+            {
+                roundTime -= Time.deltaTime;
+
+                if(roundTime <= 0)
+                {
+                    isRoundActive = false;
+                    TriggerGameEnd(false, false, true);
+                }
+            } else
+            {
+                roundTime = 0;
+            }
+
+            SetTime();
         }
 
         private void SetScore()
         {
             score.text = "Score: " + currentScore;
+        }
+
+        private void SetTime()
+        {
+            time.text = "Time: " + roundTime.ToString("F1");
+        }
+
+        private void TriggerGameEnd(bool isGameOver, bool isGameWon, bool isTimeout)
+        {
+            Time.timeScale = 0f;
+
+            if (isGameOver)
+            {
+                // Game Over (Fall Damage)
+                player.GetComponent<PlayerController>().FallOutOfBounce -= PlayerFellOutOfBounds;
+                Debug.Log("Game Over: Out of Bounds");
+            }
+
+            if (isGameWon)
+            {
+                // Won
+                Debug.Log("Level Complete!");
+            }
+
+            if (isTimeout)
+            {
+                // Timeout Game Over
+                Debug.Log("Game Over: Keine Zeit mehr");
+            }
+        }
+
+        private void PlayerFellOutOfBounds()
+        {
+            TriggerGameEnd(true, false, false);
         }
 
         public bool OnPlayerCollideWithDie(string cubeID, string typeName)
@@ -120,28 +167,20 @@ namespace GMTKGameJam2022.Managers
                     List<GameObject> availableDice = dice.FindAll(item => !diceTypesInUse.Contains(item.GetComponent<Die>().typeName));
                     GameObject nextSpawnObject = availableDice[Random.Range(0, availableDice.Count - 1)];
 
-                    string uuid = System.Guid.NewGuid().ToString();
-                    nextSpawnObject.GetComponent<Die>().id = uuid;
-                    diceIDsInUse.Add(uuid);
-                    diceTypesInUse.Add(nextSpawnObject.GetComponent<Die>().typeName);
-
-                    Instantiate(nextSpawnObject, new Vector3(Random.Range(spawnDiceXMin, spawnDiceXMax + 1), Random.Range(2, 5), Random.Range(spawnDiceYMin, spawnDiceYMax + 1)), Quaternion.identity);
+                    SpawnDie(nextSpawnObject);
 
                     respawnDiceCount--;
                 }
 
                 List<GameObject> presentObjects = GameObject.FindGameObjectsWithTag("Dice").ToList().FindAll(item => item.GetComponent<Die>().id != cubeID);
 
-                if (presentObjects.Count != 0)
+                string[] excludeIDs = new string[] { cubeID };
+                if (!FindNextTarget(excludeIDs))
                 {
-                    GameObject nextTargetElement = presentObjects[Random.Range(0, presentObjects.Count - 1)];
-                    diceHintVisualizer.SetDice(nextTargetElement);
-                    nextTargetID = nextTargetElement.GetComponent<Die>().id;
+                    TriggerGameEnd(false, true, false);
                 }
-                else
-                {
-                    Debug.Log("We have a winner!");
-                }
+
+                player.GetComponent<PlayerController>().IncreaseSpeed();
 
                 return true;
             }
@@ -149,8 +188,34 @@ namespace GMTKGameJam2022.Managers
             {
                 roundTime -= 15;
                 return false;
-                // Coroutine for invincilbe?
             }
+        }
+
+        private void SpawnDie(GameObject cube)
+        {
+            string uuid = System.Guid.NewGuid().ToString();
+
+            cube.GetComponent<Die>().id = uuid;
+
+            diceIDsInUse.Add(uuid);
+            diceTypesInUse.Add(cube.GetComponent<Die>().typeName);
+
+            Instantiate(cube, new Vector3(Random.Range(spawnDiceXMin, spawnDiceXMax + 1), Random.Range(2, 5), Random.Range(spawnDiceYMin, spawnDiceYMax + 1)), Quaternion.identity);
+        }
+
+        private bool FindNextTarget(string[] excludeIDs)
+        {
+            List<GameObject> presentObjects = GameObject.FindGameObjectsWithTag("Dice").ToList().FindAll(item => !excludeIDs.Contains(item.GetComponent<Die>().id));
+            if(presentObjects.Count == 0)
+            {
+                return false;
+            }
+
+            GameObject nextTargetElement = presentObjects[Random.Range(0, presentObjects.Count - 1)];
+            diceHintVisualizer.SetDice(nextTargetElement);
+            nextTargetID = nextTargetElement.GetComponent<Die>().id;
+
+            return true;
         }
     }
 }
