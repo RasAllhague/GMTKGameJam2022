@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using GMTKGameJam2022.Managers;
 using UnityEngine;
 
 public class Die : MonoBehaviour
@@ -9,6 +10,9 @@ public class Die : MonoBehaviour
 
     // id of the cube
     public string id;
+
+    // TypeName
+    public string typeName;
 
     void Start()
     {
@@ -29,7 +33,12 @@ public class Die : MonoBehaviour
             GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
             if (gm != null)
             {
-                gm.OnPlayerCollideWithDie(this.id);
+                bool correct = gm.OnPlayerCollideWithDie(this.id, this.typeName);
+
+                if (correct)
+                {
+                    Destroy(this.gameObject);
+                }
             }
             else
             {
