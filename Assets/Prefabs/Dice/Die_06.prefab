@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 508099050253329825}
   m_Layer: 0
   m_Name: Die_06
-  m_TagString: Untagged
+  m_TagString: Dice
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
