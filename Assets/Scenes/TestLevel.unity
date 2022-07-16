@@ -1233,8 +1233,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 097378f633f0ab543b91ef03505477f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startupDiceCount: 5
-  respawnDiceCount: 0
+  startupDiceCount: 3
+  respawnDiceCount: 2
   spawnDiceXMin: -4
   spawnDiceXMax: 4
   spawnDiceYMin: -4
