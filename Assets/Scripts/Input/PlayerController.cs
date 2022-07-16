@@ -10,9 +10,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float speed = 1;
     [SerializeField] private float rotationSpeed = 100;
     [SerializeField] private float dieY = -10;
+    private float speedMultiplier = 1;
     private GameControls inputActions;
     private InputAction turn;
-    private Rigidbody rigidBody;
     public event Action FallOutOfBounce;
 
     private void Awake()
@@ -20,24 +20,20 @@ public class PlayerController : MonoBehaviour
         inputActions = new GameControls();
     }
 
-    public void Start()
-    {
-        rigidBody = GetComponent<Rigidbody>();
-    }
-
     private void OnEnable()
     {
         turn = inputActions.Player.Turn;
         turn.Enable();
 
+        //Optional, if single action is needed (e.g. for jumps)
         //inputActions.Player.Turn.performed += TurnCharacter;
         inputActions.Player.Turn.Enable();
     }
 
-    private void TurnCharacter(InputAction.CallbackContext obj)
-    {
-        Debug.Log("Performed" + obj.ReadValue<Vector3>());
-    }
+    //private void TurnCharacter(InputAction.CallbackContext obj)
+    //{
+    //    Debug.Log("Performed" + obj.ReadValue<Vector3>());
+    //}
 
     private void OnDisable()
     {
@@ -47,16 +43,32 @@ public class PlayerController : MonoBehaviour
 
     public void Update()
     {
-        Vector3 rotation = new Vector3(0, turn.ReadValue<Vector3>().x, 0);
-        this.transform.Rotate(rotation * rotationSpeed * Time.deltaTime);
-        float ySpeed = rigidBody.velocity.y;
+        //Player rotation
+        Vector3 eulerRotation = transform.rotation.eulerAngles;
+        transform.rotation = Quaternion.Euler(eulerRotation.x, eulerRotation.y + turn.ReadValue<Vector3>().x * rotationSpeed * Time.deltaTime * speedMultiplier, 0);
+        //Player movement
         Vector3 movement = transform.forward.normalized * speed;
-        movement.y = ySpeed;
-        rigidBody.velocity = movement;
+        transform.position += movement * Time.deltaTime;
+        if (transform.position.y < dieY)
+            OnFallOutOfBounce();
     }
 
     protected void OnFallOutOfBounce()
     {
         FallOutOfBounce?.Invoke();
+    }
+
+    public void IncreaseSpeed()
+    {
+        speedMultiplier += 0.1f;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("GameWall"))
+        {
+            //Rotates the player by 180°
+            Vector3 eulerRotation = transform.rotation.eulerAngles;
+            transform.rotation = Quaternion.Euler(eulerRotation.x, 90 + eulerRotation.y + turn.ReadValue<Vector3>().x * rotationSpeed * Time.deltaTime * speedMultiplier, 0);        }
     }
 }
