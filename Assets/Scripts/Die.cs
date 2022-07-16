@@ -10,6 +10,8 @@ public class Die : MonoBehaviour
     // id of the cube
     public string id;
 
+    public string typeName;
+
     void Start()
     {
         MeshRenderer renderer = GetComponent<MeshRenderer>();
@@ -29,7 +31,7 @@ public class Die : MonoBehaviour
             GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
             if (gm != null)
             {
-                gm.OnPlayerCollideWithDie(this.id);
+                gm.OnPlayerCollideWithDie(this.id, this.typeName);
             }
             else
             {

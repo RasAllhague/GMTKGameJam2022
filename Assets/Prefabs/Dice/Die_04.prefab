@@ -113,6 +113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   texture: {fileID: 2800000, guid: dd3ad3085976b4b4c878c483d2f986c7, type: 3}
   id: 
+  typeName: type_die_4
 --- !u!54 &2765789055598826960
 Rigidbody:
   m_ObjectHideFlags: 0
