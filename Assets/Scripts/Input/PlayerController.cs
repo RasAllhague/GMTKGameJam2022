@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
     public void Update()
     {
         //Player rotation
-        transform.Rotate(0, turn.ReadValue<Vector3>().x * rotationSpeed * Time.deltaTime + (speedMultiplier * Time.deltaTime), 0);
+        transform.Rotate(0, turn.ReadValue<Vector3>().x * (rotationSpeed * Time.deltaTime + (speedMultiplier * Time.deltaTime)), 0);
         //Player movement
         Vector3 movement = transform.forward.normalized * speed;
         transform.position += movement * speedMultiplier * Time.deltaTime;

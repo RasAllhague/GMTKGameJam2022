@@ -118,12 +118,16 @@ public class GameManager : MonoBehaviour
 
     private void TriggerGameEnd(bool isGameOver, bool isGameWon, bool isTimeout)
     {
-        Time.timeScale = 0f;
+        //Persists even after scene change, so that it corrupts further actions
+        //Time.timeScale = 0f;
 
         if (isGameOver)
         {
             // Game Over (Fall Damage)
             player.GetComponent<PlayerController>().FallOutOfBounce -= PlayerFellOutOfBounds;
+
+            // Switch to GameOver Scene
+            UnityEngine.SceneManagement.SceneManager.LoadScene(3);
             Debug.Log("Game Over: Out of Bounds");
         }
 
@@ -181,7 +185,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            roundTime -= 15;
+            //roundTime -= 15;
             return false;
         }
     }
