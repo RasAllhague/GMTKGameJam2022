@@ -45,10 +45,10 @@ public class PlayerController : MonoBehaviour
     {
         //Player rotation
         Vector3 eulerRotation = transform.rotation.eulerAngles;
-        transform.rotation = Quaternion.Euler(eulerRotation.x, eulerRotation.y + turn.ReadValue<Vector3>().x * rotationSpeed * Time.deltaTime, 0);
+        transform.rotation = Quaternion.Euler(eulerRotation.x, eulerRotation.y + turn.ReadValue<Vector3>().x * rotationSpeed * Time.deltaTime * speedMultiplier, 0);
         //Player movement
         Vector3 movement = transform.forward.normalized * speed;
-        transform.position += movement * speedMultiplier * Time.deltaTime;
+        transform.position += movement * Time.deltaTime;
         if (transform.position.y < dieY)
             OnFallOutOfBounce();
     }
@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour
 
     public void IncreaseSpeed()
     {
-        speedMultiplier += 1f;
+        speedMultiplier += 0.1f;
     }
     private void OnCollisionEnter(Collision other)
     {
