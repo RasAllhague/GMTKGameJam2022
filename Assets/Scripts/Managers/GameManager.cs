@@ -32,8 +32,6 @@ using UnityEngine;
     private List<string> diceTypesInUse;
     private List<string> diceIDsInUse;
 
-    public static GameManager Instance { get; private set; }
-
     private void Start()
     {
         if (startupDiceCount == 0)
@@ -150,6 +148,7 @@ using UnityEngine;
 
 public bool OnPlayerCollideWithDie(string cubeID, string typeName)
 {
+
     if (cubeID == nextTargetID)
     {
         currentScore += 1;

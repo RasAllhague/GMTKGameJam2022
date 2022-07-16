@@ -31,7 +31,12 @@ public class Die : MonoBehaviour
             GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
             if (gm != null)
             {
-                gm.OnPlayerCollideWithDie(this.id, this.typeName);
+                bool correct = gm.OnPlayerCollideWithDie(this.id, this.typeName);
+
+                if (correct)
+                {
+                    Destroy(this.gameObject);
+                }
             }
             else
             {
