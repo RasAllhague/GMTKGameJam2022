@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region level settings
-    private float roundTime = 300;
+    public float roundTime = 300;
     private bool isRoundActive = true;
     public uint startupDiceCount = 1;
     public uint respawnDiceCount = 0;
