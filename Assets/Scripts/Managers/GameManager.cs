@@ -11,6 +11,7 @@ using UnityEngine;
     private DiceHintVisualizer diceHintVisualizer;
     private GameObject player;
     public GameObject gameOverScreen;
+    public GameObject gameWonScreen;
     #endregion
 
     #region
@@ -24,7 +25,7 @@ using UnityEngine;
     #endregion
 
     #region level settings
-    private float roundTime = 10;
+    private float roundTime = 300;
     private bool isRoundActive = true;
     public uint startupDiceCount = 1;
     public uint respawnDiceCount = 0;
@@ -59,6 +60,10 @@ using UnityEngine;
         if(gameOverScreen == null)
         {
             Debug.LogWarning("GameManager: Missing Game Over Screen");
+        }
+        if (gameWonScreen == null)
+        {
+            Debug.LogWarning("GameManager: Missing Game Won Screen");
         }
 
         audioSource = GetComponent<AudioSource>();
@@ -154,7 +159,7 @@ using UnityEngine;
         if (isGameWon)
         {
             // Won
-            Debug.Log("Level Complete!");
+            ShowGameWonScreen();
         }
         SetScore();
 
@@ -183,6 +188,16 @@ using UnityEngine;
         if (levelBGM != null)
         {
             levelBGM.GetComponent<AudioSource>().volume = 0.3f;
+        }
+    }
+    private void ShowGameWonScreen()
+    {
+        Instantiate(gameWonScreen, new Vector3(0, 0, 0), Quaternion.identity);
+
+        var levelBGM = GameObject.Find("LevelBGM");
+        if (levelBGM != null)
+        {
+            levelBGM.GetComponent<AudioSource>().Stop();
         }
     }
 

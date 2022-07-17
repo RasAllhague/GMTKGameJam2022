@@ -97,7 +97,7 @@ public class PlayerController : MonoBehaviour
 
     public void IncreaseSpeed()
     {
-        speedMultiplier += 2f;
+        speedMultiplier += 0.5f;
     }
     private void OnCollisionEnter(Collision other)
     {
