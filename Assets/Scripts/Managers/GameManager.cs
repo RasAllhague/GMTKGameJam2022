@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("Missing Audio File for GameManager");
         }
 
-        time = GameObject.Find("Time").GetComponent<TextMeshProUGUI>();
+        time = GameObject.Find("TimeValue").GetComponent<TextMeshProUGUI>();
         score = GameObject.Find("Score").GetComponent<TextMeshProUGUI>();
         diceHintVisualizer = GameObject.Find("DiceHintVisualizer").GetComponent<DiceHintVisualizer>();
         player = GameObject.Find("Player");
@@ -143,7 +143,7 @@ public class GameManager : MonoBehaviour
 
     private void SetTime()
     {
-        time.text = "Time: " + roundTime.ToString("F1");
+        time.text = roundTime.ToString("F1");
     }
 
     private void TriggerGameEnd(bool isGameOver, bool isGameWon, bool isTimeout)

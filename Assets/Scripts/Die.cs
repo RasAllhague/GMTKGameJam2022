@@ -12,18 +12,21 @@ public class Die : MonoBehaviour
 
     public string typeName;
 
+    public bool sendImpulse = true;
+
     void Start()
     {
         MeshRenderer renderer = GetComponent<MeshRenderer>();
-        if(renderer != null)
+        if (renderer != null)
         {
             renderer.material.SetTexture("_MainTex", texture);
-        } else
+        }
+        else
         {
             Debug.LogError("Die / Cube / Die.cs / MeshRenderer not found");
         }
-
-        GetComponent<Rigidbody>().AddForce(new Vector3(Random.Range(-15f, 15f), 0f, Random.Range(-15f, 15f)), ForceMode.Impulse);
+        if (sendImpulse)
+            GetComponent<Rigidbody>().AddForce(new Vector3(Random.Range(-15f, 15f), 0f, Random.Range(-15f, 15f)), ForceMode.Impulse);
     }
 
     private void Update()
@@ -45,7 +48,7 @@ public class Die : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player")
         {
             GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
             if (gm != null)
