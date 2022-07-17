@@ -138,6 +138,10 @@ PrefabInstance:
       propertyPath: gameOverScreen
       value: 
       objectReference: {fileID: 6006353377624224154, guid: e99ea4857ad69604e9c1cb273de74b37, type: 3}
+    - target: {fileID: 7603674511551684230, guid: fe64489cbd7aca74ebde13f63e757bfa, type: 3}
+      propertyPath: collectedDiceWrong
+      value: 
+      objectReference: {fileID: 8300000, guid: 1495daa72964b0a4aac8fa43ddebb436, type: 3}
     - target: {fileID: 7603674511551684231, guid: fe64489cbd7aca74ebde13f63e757bfa, type: 3}
       propertyPath: m_Name
       value: GameManager

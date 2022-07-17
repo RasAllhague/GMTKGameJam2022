@@ -146,8 +146,7 @@ public class GameManager : MonoBehaviour
 
     private void TriggerGameEnd(bool isGameOver, bool isGameWon, bool isTimeout)
     {
-        //Persists even after scene change, so that it corrupts further actions
-        //Time.timeScale = 0f;
+        Time.timeScale = 0f;
 
         if (isGameOver)
         {
