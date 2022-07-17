@@ -1599,9 +1599,21 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 7603674511551684230, guid: fe64489cbd7aca74ebde13f63e757bfa, type: 3}
+      propertyPath: gameWonScreen
+      value: 
+      objectReference: {fileID: 6006353377624224154, guid: 6baef6377b7c54e47a627ae0d8074373, type: 3}
+    - target: {fileID: 7603674511551684230, guid: fe64489cbd7aca74ebde13f63e757bfa, type: 3}
       propertyPath: gameOverScreen
       value: 
       objectReference: {fileID: 6006353377624224154, guid: e99ea4857ad69604e9c1cb273de74b37, type: 3}
+    - target: {fileID: 7603674511551684230, guid: fe64489cbd7aca74ebde13f63e757bfa, type: 3}
+      propertyPath: respawnDiceCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7603674511551684230, guid: fe64489cbd7aca74ebde13f63e757bfa, type: 3}
+      propertyPath: startupDiceCount
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7603674511551684231, guid: fe64489cbd7aca74ebde13f63e757bfa, type: 3}
       propertyPath: m_Name
       value: GameManager
