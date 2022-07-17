@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
 
     private List<string> diceTypesInUse;
     private List<string> diceIDsInUse;
+    private List<Vector2> locationsBlocked;
 
     private void Start()
     {
@@ -100,6 +101,7 @@ public class GameManager : MonoBehaviour
 
         diceIDsInUse = new List<string>();
         diceTypesInUse = new List<string>();
+        locationsBlocked = new List<Vector2>();
 
         for (int i = 0; i < startupDiceCount; i++)
         {
@@ -210,12 +212,6 @@ public class GameManager : MonoBehaviour
             audioSource.clip = collectedDiceCorrect;
             audioSource.Play();
 
-        currentScore += 1;
-        SetScore();
-
-        diceIDsInUse.Remove(cubeID);
-        diceTypesInUse.Remove(typeName);
-
         if (cubeID == nextTargetID)
         {
             currentScore += 1;
@@ -255,6 +251,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void DieFellOfThePlane(string cubeID, string typeName)
+    {
+        diceIDsInUse.Remove(cubeID);
+        diceTypesInUse.Remove(typeName);
+
+        List<GameObject> availableDice = dice.FindAll(item => !diceTypesInUse.Contains(item.GetComponent<Die>().typeName));
+        GameObject nextSpawnObject = availableDice[Random.Range(0, availableDice.Count - 1)];
+
+        SpawnDie(nextSpawnObject);
+    }
+
     private void SpawnDie(GameObject cube)
     {
         string uuid = System.Guid.NewGuid().ToString();
@@ -265,7 +272,18 @@ public class GameManager : MonoBehaviour
         diceIDsInUse.Add(uuid);
         diceTypesInUse.Add(cube.GetComponent<Die>().typeName);
 
-        Instantiate(cube, new Vector3(Random.Range(spawnDiceXMin, spawnDiceXMax + 1), Random.Range(2, 5), Random.Range(spawnDiceYMin, spawnDiceYMax + 1)), Quaternion.identity);
+        Vector3 position = new Vector3(Random.Range(spawnDiceXMin, spawnDiceXMax + 1), Random.Range(2, 5), Random.Range(spawnDiceYMin, spawnDiceYMax + 1));
+        Vector2 plane = new Vector2(position.x, position.z);
+
+        while (locationsBlocked.Contains(plane))
+        {
+            position = new Vector3(Random.Range(spawnDiceXMin, spawnDiceXMax + 1), Random.Range(2, 5), Random.Range(spawnDiceYMin, spawnDiceYMax + 1));
+            plane = new Vector2(position.x, position.z);
+        }
+
+        locationsBlocked.Add(plane);
+
+        Instantiate(cube, position, Quaternion.identity);
         score.text = "Score: " + currentScore;
     }
 

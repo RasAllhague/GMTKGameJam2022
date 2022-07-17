@@ -22,6 +22,25 @@ public class Die : MonoBehaviour
         {
             Debug.LogError("Die / Cube / Die.cs / MeshRenderer not found");
         }
+
+        GetComponent<Rigidbody>().AddForce(new Vector3(Random.Range(-15f, 15f), 0f, Random.Range(-15f, 15f)), ForceMode.Impulse);
+    }
+
+    private void Update()
+    {
+        if (transform.position.y < -10)
+        {
+            GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+            if (gm != null)
+            {
+                gm.DieFellOfThePlane(this.id, this.typeName);
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                Debug.LogWarning("Die fell of the cliff, the Game Manager was not found");
+            }
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
