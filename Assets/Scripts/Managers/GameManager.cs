@@ -12,6 +12,12 @@ using UnityEngine;
     private GameObject player;
     #endregion
 
+    #region
+    private AudioSource audioSource;
+    public AudioClip collectedDiceCorrect;
+    public AudioClip collectedDiceWrong;
+    #endregion
+
     #region player data
     private int currentScore = 0;
     #endregion
@@ -47,6 +53,17 @@ using UnityEngine;
         if (startupDiceCount > dice.Count)
         {
             Debug.LogWarning("GameManager: Cannot spawn more dice at once than are uniquely available");
+        }
+
+        audioSource = GetComponent<AudioSource>();
+        if(audioSource == null)
+        {
+            Debug.LogWarning("No Audio Source in Game Manager!");
+        }
+
+        if(collectedDiceCorrect == null || collectedDiceWrong == null)
+        {
+            Debug.LogWarning("Missing Audio File for GameManager");
         }
 
         time = GameObject.Find("Time").GetComponent<TextMeshProUGUI>();
@@ -151,6 +168,10 @@ public bool OnPlayerCollideWithDie(string cubeID, string typeName)
 
     if (cubeID == nextTargetID)
     {
+
+            audioSource.clip = collectedDiceCorrect;
+            audioSource.Play();
+
         currentScore += 1;
         SetScore();
 
@@ -181,7 +202,10 @@ public bool OnPlayerCollideWithDie(string cubeID, string typeName)
     }
     else
     {
-        roundTime -= 15;
+            audioSource.clip = collectedDiceWrong;
+            audioSource.Play();
+
+            roundTime -= 15;
         return false;
     }
 }
