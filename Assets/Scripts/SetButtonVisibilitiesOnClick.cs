@@ -17,7 +17,6 @@ public class SetButtonVisibilitiesOnClick : MonoBehaviour
 
     private void SetVisibilities()
     {
-        Debug.Log("SETTING");
         foreach (GameObject obj in ObjectsToShow)
         {
             obj.SetActive(true);

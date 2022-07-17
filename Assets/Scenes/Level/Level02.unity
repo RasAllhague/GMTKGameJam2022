@@ -155,6 +155,10 @@ PrefabInstance:
       value: -20
       objectReference: {fileID: 0}
     - target: {fileID: 7603674511551684230, guid: fe64489cbd7aca74ebde13f63e757bfa, type: 3}
+      propertyPath: currentLevelID
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7603674511551684230, guid: fe64489cbd7aca74ebde13f63e757bfa, type: 3}
       propertyPath: gameOverScreen
       value: 
       objectReference: {fileID: 6006353377624224154, guid: e99ea4857ad69604e9c1cb273de74b37, type: 3}
@@ -729,7 +733,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6672065032636339498, guid: b067b8fe46b0d554ca0b132206e2870e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6672065032636339498, guid: b067b8fe46b0d554ca0b132206e2870e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1014,6 +1018,10 @@ PrefabInstance:
     - target: {fileID: 5251760850191778858, guid: 7c8d291b32e878941b0e3ddd0d58b2ce, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5251760850191778859, guid: 7c8d291b32e878941b0e3ddd0d58b2ce, type: 3}
+      propertyPath: Loop
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c8d291b32e878941b0e3ddd0d58b2ce, type: 3}
@@ -1332,6 +1340,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 781465588798399995, guid: 236f458cedf0eab4ea3a005091ff556c, type: 3}
+      propertyPath: m_text
+      value: Level 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3796284998447873394, guid: 236f458cedf0eab4ea3a005091ff556c, type: 3}
       propertyPath: m_Pivot.x
       value: 0
