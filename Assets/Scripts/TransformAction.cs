@@ -10,7 +10,7 @@ using UnityEngine;
 public class TransformAction : MonoBehaviour
 {
     public float relativeActionStartTime  = 0;
-    public float actionTime = 0;
+    public float actionTime = 1;
     public Vector3 actionMovement = new Vector3();
     public Vector3 actionRotation = new Vector3();
 
