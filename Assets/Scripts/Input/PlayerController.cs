@@ -14,6 +14,9 @@ public class PlayerController : MonoBehaviour
     private GameControls inputActions;
     private InputAction turn;
     public event Action FallOutOfBounce;
+    private AudioSource audioSource;
+    public AudioClip collisionWallSound;
+    private Vector3 lastPosition;
 
     private void Awake()
     {
@@ -35,6 +38,19 @@ public class PlayerController : MonoBehaviour
     //    Debug.Log("Performed" + obj.ReadValue<Vector3>());
     //}
 
+    public void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+        if(audioSource == null)
+        {
+            Debug.LogWarning("Player has no AudioSource");
+        }
+        if(collisionWallSound == null)
+        {
+            Debug.LogWarning("Player has no CollisionWall SFX");
+        }
+    }
+
     private void OnDisable()
     {
         turn.Disable();
@@ -43,6 +59,8 @@ public class PlayerController : MonoBehaviour
 
     public void Update()
     {
+        lastPosition = transform.position;
+
         //Player rotation
         transform.Rotate(0, turn.ReadValue<Vector3>().x * (rotationSpeed * Time.deltaTime + (speedMultiplier * Time.deltaTime)), 0);
         //Player movement
@@ -50,6 +68,25 @@ public class PlayerController : MonoBehaviour
         transform.position += movement * speedMultiplier * Time.deltaTime;
         if (transform.position.y < dieY)
             OnFallOutOfBounce();
+
+        ToggleStepSound(IsMoving());
+    }
+
+    private bool IsMoving()
+    {
+        return lastPosition != transform.position;
+    }
+
+    private void ToggleStepSound(bool enable)
+    {
+        if(!audioSource.isPlaying && enable)
+        {
+            audioSource.Play();
+        }
+        else if(!enable)
+        {
+            audioSource.Stop();
+        }
     }
 
     protected void OnFallOutOfBounce()
@@ -65,9 +102,12 @@ public class PlayerController : MonoBehaviour
     {
         if (other.collider.CompareTag("GameWall"))
         {
-            //Rotates the player by 180°
+            //Rotates the player by 180Â°
             Vector3 eulerRotation = transform.rotation.eulerAngles;
             transform.rotation = Quaternion.Euler(eulerRotation.x, 180 + eulerRotation.y + turn.ReadValue<Vector3>().x * rotationSpeed * Time.deltaTime * speedMultiplier, 0);
+            audioSource.PlayOneShot(collisionWallSound);
         }
     }
+
+        
 }

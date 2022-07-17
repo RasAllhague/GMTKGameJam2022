@@ -10,6 +10,14 @@ public class GameManager : MonoBehaviour
     private TextMeshProUGUI score;
     private DiceHintVisualizer diceHintVisualizer;
     private GameObject player;
+    public GameObject gameOverScreen;
+    public GameObject gameWonScreen;
+    #endregion
+
+    #region
+    private AudioSource audioSource;
+    public AudioClip collectedDiceCorrect;
+    public AudioClip collectedDiceWrong;
     #endregion
 
     #region player data
@@ -47,6 +55,26 @@ public class GameManager : MonoBehaviour
         if (startupDiceCount > dice.Count)
         {
             Debug.LogWarning("GameManager: Cannot spawn more dice at once than are uniquely available");
+        }
+
+        if(gameOverScreen == null)
+        {
+            Debug.LogWarning("GameManager: Missing Game Over Screen");
+        }
+        if (gameWonScreen == null)
+        {
+            Debug.LogWarning("GameManager: Missing Game Won Screen");
+        }
+
+        audioSource = GetComponent<AudioSource>();
+        if(audioSource == null)
+        {
+            Debug.LogWarning("No Audio Source in Game Manager!");
+        }
+
+        if(collectedDiceCorrect == null || collectedDiceWrong == null)
+        {
+            Debug.LogWarning("Missing Audio File for GameManager");
         }
 
         time = GameObject.Find("Time").GetComponent<TextMeshProUGUI>();
@@ -125,23 +153,51 @@ public class GameManager : MonoBehaviour
         {
             // Game Over (Fall Damage)
             player.GetComponent<PlayerController>().FallOutOfBounce -= PlayerFellOutOfBounds;
-
-            // Switch to GameOver Scene
-            UnityEngine.SceneManagement.SceneManager.LoadScene(3);
-            Debug.Log("Game Over: Out of Bounds");
+            ShowGameOverScreen("You lost contact with earth and yourself");
         }
 
         if (isGameWon)
         {
             // Won
-            Debug.Log("Level Complete!");
+            ShowGameWonScreen();
         }
         SetScore();
 
         if (isTimeout)
         {
             // Timeout Game Over
-            Debug.Log("Game Over: Keine Zeit mehr");
+            ShowGameOverScreen("Your legs ran out of time");
+        }
+    }
+
+    private void ShowGameOverScreen(string reason)
+    {
+        try
+        {
+            gameOverScreen.transform.GetChild(0).Find("TextReason").GetComponent<TextMeshProUGUI>().text = reason;
+
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError(e.ToString());
+        }
+
+        Instantiate(gameOverScreen, new Vector3(0, 0, 0), Quaternion.identity);
+
+        var levelBGM = GameObject.Find("LevelBGM");
+        if (levelBGM != null)
+        {
+            levelBGM.GetComponent<AudioSource>().volume = 0.3f;
+        }
+    }
+    private void ShowGameWonScreen()
+    {
+        Instantiate(gameWonScreen, new Vector3(0, 0, 0), Quaternion.identity);
+
+        var levelBGM = GameObject.Find("LevelBGM");
+        if (levelBGM != null)
+        {
+            levelBGM.GetComponent<AudioSource>().Stop();
         }
     }
 
@@ -152,6 +208,14 @@ public class GameManager : MonoBehaviour
 
     public bool OnPlayerCollideWithDie(string cubeID, string typeName)
     {
+            audioSource.clip = collectedDiceCorrect;
+            audioSource.Play();
+
+        currentScore += 1;
+        SetScore();
+
+        diceIDsInUse.Remove(cubeID);
+        diceTypesInUse.Remove(typeName);
 
         if (cubeID == nextTargetID)
         {
@@ -172,7 +236,6 @@ public class GameManager : MonoBehaviour
             }
 
             List<GameObject> presentObjects = GameObject.FindGameObjectsWithTag("Dice").ToList().FindAll(item => item.GetComponent<Die>().id != cubeID);
-
             string[] excludeIDs = new string[] { cubeID };
             if (!FindNextTarget(excludeIDs))
             {
@@ -185,8 +248,11 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            //roundTime -= 15;
-            return false;
+            audioSource.clip = collectedDiceWrong;
+            audioSource.Play();
+
+            roundTime -= 15;
+        return false;
         }
     }
 
