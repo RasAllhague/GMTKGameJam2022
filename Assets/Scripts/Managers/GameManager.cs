@@ -262,6 +262,7 @@ public class GameManager : MonoBehaviour
         GameObject nextSpawnObject = availableDice[Random.Range(0, availableDice.Count - 1)];
 
         SpawnDie(nextSpawnObject);
+        FindNextTarget(new string[] { });
     }
 
     private void SpawnDie(GameObject cube)
@@ -286,7 +287,6 @@ public class GameManager : MonoBehaviour
         locationsBlocked.Add(plane);
 
         Instantiate(cube, position, Quaternion.identity);
-        score.text = "Score: " + currentScore;
     }
 
     private bool FindNextTarget(string[] excludeIDs)
