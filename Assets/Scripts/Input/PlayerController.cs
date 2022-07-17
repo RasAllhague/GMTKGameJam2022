@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
 
-    [SerializeField] private float speed = 1;
+    [SerializeField] private float speed = 5;
     [SerializeField] private float rotationSpeed = 100;
     [SerializeField] private float dieY = -10;
     private float speedMultiplier = 1;
@@ -62,8 +62,7 @@ public class PlayerController : MonoBehaviour
         lastPosition = transform.position;
 
         //Player rotation
-        Vector3 eulerRotation = transform.rotation.eulerAngles;
-        transform.rotation = Quaternion.Euler(eulerRotation.x, eulerRotation.y + turn.ReadValue<Vector3>().x * rotationSpeed * Time.deltaTime, 0);
+        transform.Rotate(0, turn.ReadValue<Vector3>().x * (rotationSpeed * Time.deltaTime + (speedMultiplier * Time.deltaTime)), 0);
         //Player movement
         Vector3 movement = transform.forward.normalized * speed;
         transform.position += movement * speedMultiplier * Time.deltaTime;
@@ -103,10 +102,9 @@ public class PlayerController : MonoBehaviour
     {
         if (other.collider.CompareTag("GameWall"))
         {
-            //Rotates the player by 180°
+            //Rotates the player by 180Â°
             Vector3 eulerRotation = transform.rotation.eulerAngles;
             transform.rotation = Quaternion.Euler(eulerRotation.x, 180 + eulerRotation.y + turn.ReadValue<Vector3>().x * rotationSpeed * Time.deltaTime * speedMultiplier, 0);
-
             audioSource.PlayOneShot(collisionWallSound);
         }
     }

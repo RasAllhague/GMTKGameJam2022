@@ -3,7 +3,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
-    public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     #region UI
     private TextMeshProUGUI time;
@@ -129,7 +129,7 @@ using UnityEngine;
         {
             roundTime = 0;
         }
-        
+
 
         SetTime();
     }
@@ -146,13 +146,13 @@ using UnityEngine;
 
     private void TriggerGameEnd(bool isGameOver, bool isGameWon, bool isTimeout)
     {
-        Time.timeScale = 0f;
+        //Persists even after scene change, so that it corrupts further actions
+        //Time.timeScale = 0f;
 
         if (isGameOver)
         {
             // Game Over (Fall Damage)
             player.GetComponent<PlayerController>().FallOutOfBounce -= PlayerFellOutOfBounds;
-
             ShowGameOverScreen("You lost contact with earth and yourself");
         }
 
@@ -206,12 +206,8 @@ using UnityEngine;
         TriggerGameEnd(true, false, false);
     }
 
-public bool OnPlayerCollideWithDie(string cubeID, string typeName)
-{
-
-    if (cubeID == nextTargetID)
+    public bool OnPlayerCollideWithDie(string cubeID, string typeName)
     {
-
             audioSource.clip = collectedDiceCorrect;
             audioSource.Play();
 
@@ -221,63 +217,71 @@ public bool OnPlayerCollideWithDie(string cubeID, string typeName)
         diceIDsInUse.Remove(cubeID);
         diceTypesInUse.Remove(typeName);
 
-        if (respawnDiceCount > 0)
+        if (cubeID == nextTargetID)
         {
-            List<GameObject> availableDice = dice.FindAll(item => !diceTypesInUse.Contains(item.GetComponent<Die>().typeName));
-            GameObject nextSpawnObject = availableDice[Random.Range(0, availableDice.Count - 1)];
+            currentScore += 1;
+            SetScore();
 
-            SpawnDie(nextSpawnObject);
+            diceIDsInUse.Remove(cubeID);
+            diceTypesInUse.Remove(typeName);
 
-            respawnDiceCount--;
+            if (respawnDiceCount > 0)
+            {
+                List<GameObject> availableDice = dice.FindAll(item => !diceTypesInUse.Contains(item.GetComponent<Die>().typeName));
+                GameObject nextSpawnObject = availableDice[Random.Range(0, availableDice.Count - 1)];
+
+                SpawnDie(nextSpawnObject);
+
+                respawnDiceCount--;
+            }
+
+            List<GameObject> presentObjects = GameObject.FindGameObjectsWithTag("Dice").ToList().FindAll(item => item.GetComponent<Die>().id != cubeID);
+            string[] excludeIDs = new string[] { cubeID };
+            if (!FindNextTarget(excludeIDs))
+            {
+                TriggerGameEnd(false, true, false);
+            }
+
+            player.GetComponent<PlayerController>().IncreaseSpeed();
+
+            return true;
         }
-
-        List<GameObject> presentObjects = GameObject.FindGameObjectsWithTag("Dice").ToList().FindAll(item => item.GetComponent<Die>().id != cubeID);
-
-        string[] excludeIDs = new string[] { cubeID };
-        if (!FindNextTarget(excludeIDs))
+        else
         {
-            TriggerGameEnd(false, true, false);
-        }
-
-        player.GetComponent<PlayerController>().IncreaseSpeed();
-
-        return true;
-    }
-    else
-    {
             audioSource.clip = collectedDiceWrong;
             audioSource.Play();
 
             roundTime -= 15;
         return false;
+        }
     }
-}
 
-private void SpawnDie(GameObject cube)
-{
-    string uuid = System.Guid.NewGuid().ToString();
-
-    cube.GetComponent<Die>().id = uuid;
-
-    diceIDsInUse.Add(uuid);
-    diceTypesInUse.Add(cube.GetComponent<Die>().typeName);
-
-    Instantiate(cube, new Vector3(Random.Range(spawnDiceXMin, spawnDiceXMax + 1), Random.Range(2, 5), Random.Range(spawnDiceYMin, spawnDiceYMax + 1)), Quaternion.identity);
-    score.text = "Score: " + currentScore;
-}
-
-private bool FindNextTarget(string[] excludeIDs)
-{
-    List<GameObject> presentObjects = GameObject.FindGameObjectsWithTag("Dice").ToList().FindAll(item => !excludeIDs.Contains(item.GetComponent<Die>().id));
-    if (presentObjects.Count == 0)
+    private void SpawnDie(GameObject cube)
     {
-        return false;
+        string uuid = System.Guid.NewGuid().ToString();
+
+        cube.GetComponent<Die>().id = uuid;
+        cube.layer = LayerMask.NameToLayer("Map");
+
+        diceIDsInUse.Add(uuid);
+        diceTypesInUse.Add(cube.GetComponent<Die>().typeName);
+
+        Instantiate(cube, new Vector3(Random.Range(spawnDiceXMin, spawnDiceXMax + 1), Random.Range(2, 5), Random.Range(spawnDiceYMin, spawnDiceYMax + 1)), Quaternion.identity);
+        score.text = "Score: " + currentScore;
     }
 
-    GameObject nextTargetElement = presentObjects[Random.Range(0, presentObjects.Count - 1)];
-    diceHintVisualizer.SetDice(nextTargetElement);
-    nextTargetID = nextTargetElement.GetComponent<Die>().id;
+    private bool FindNextTarget(string[] excludeIDs)
+    {
+        List<GameObject> presentObjects = GameObject.FindGameObjectsWithTag("Dice").ToList().FindAll(item => !excludeIDs.Contains(item.GetComponent<Die>().id));
+        if (presentObjects.Count == 0)
+        {
+            return false;
+        }
 
-    return true;
+        GameObject nextTargetElement = presentObjects[Random.Range(0, presentObjects.Count - 1)];
+        diceHintVisualizer.SetDice(nextTargetElement);
+        nextTargetID = nextTargetElement.GetComponent<Die>().id;
+
+        return true;
+    }
 }
-    }
