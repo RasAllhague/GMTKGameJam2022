@@ -10,6 +10,7 @@ using UnityEngine;
     private TextMeshProUGUI score;
     private DiceHintVisualizer diceHintVisualizer;
     private GameObject player;
+    public GameObject gameOverScreen;
     #endregion
 
     #region
@@ -23,7 +24,7 @@ using UnityEngine;
     #endregion
 
     #region level settings
-    private float roundTime = 300;
+    private float roundTime = 10;
     private bool isRoundActive = true;
     public uint startupDiceCount = 1;
     public uint respawnDiceCount = 0;
@@ -53,6 +54,11 @@ using UnityEngine;
         if (startupDiceCount > dice.Count)
         {
             Debug.LogWarning("GameManager: Cannot spawn more dice at once than are uniquely available");
+        }
+
+        if(gameOverScreen == null)
+        {
+            Debug.LogWarning("GameManager: Missing Game Over Screen");
         }
 
         audioSource = GetComponent<AudioSource>();
@@ -141,7 +147,8 @@ using UnityEngine;
         {
             // Game Over (Fall Damage)
             player.GetComponent<PlayerController>().FallOutOfBounce -= PlayerFellOutOfBounds;
-            Debug.Log("Game Over: Out of Bounds");
+
+            ShowGameOverScreen("You lost contact with earth and yourself");
         }
 
         if (isGameWon)
@@ -154,7 +161,28 @@ using UnityEngine;
         if (isTimeout)
         {
             // Timeout Game Over
-            Debug.Log("Game Over: Keine Zeit mehr");
+            ShowGameOverScreen("Your legs ran out of time");
+        }
+    }
+
+    private void ShowGameOverScreen(string reason)
+    {
+        try
+        {
+            gameOverScreen.transform.GetChild(0).Find("TextReason").GetComponent<TextMeshProUGUI>().text = reason;
+
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError(e.ToString());
+        }
+
+        Instantiate(gameOverScreen, new Vector3(0, 0, 0), Quaternion.identity);
+
+        var levelBGM = GameObject.Find("LevelBGM");
+        if (levelBGM != null)
+        {
+            levelBGM.GetComponent<AudioSource>().volume = 0.3f;
         }
     }
 
