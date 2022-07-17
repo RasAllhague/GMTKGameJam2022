@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private InputAction turn;
     public event Action FallOutOfBounce;
     private AudioSource audioSource;
+    public AudioClip collisionWallSound;
     private Vector3 lastPosition;
 
     private void Awake()
@@ -43,6 +44,10 @@ public class PlayerController : MonoBehaviour
         if(audioSource == null)
         {
             Debug.LogWarning("Player has no AudioSource");
+        }
+        if(collisionWallSound == null)
+        {
+            Debug.LogWarning("Player has no CollisionWall SFX");
         }
     }
 
@@ -100,6 +105,11 @@ public class PlayerController : MonoBehaviour
         {
             //Rotates the player by 180°
             Vector3 eulerRotation = transform.rotation.eulerAngles;
-            transform.rotation = Quaternion.Euler(eulerRotation.x, 180 + eulerRotation.y + turn.ReadValue<Vector3>().x * rotationSpeed * Time.deltaTime * speedMultiplier, 0);        }
+            transform.rotation = Quaternion.Euler(eulerRotation.x, 180 + eulerRotation.y + turn.ReadValue<Vector3>().x * rotationSpeed * Time.deltaTime * speedMultiplier, 0);
+
+            audioSource.PlayOneShot(collisionWallSound);
+        }
     }
+
+        
 }
