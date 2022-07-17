@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
     public int spawnDiceYMax = 1;
     public List<GameObject> dice;
     private string nextTargetID = "";
+    public int currentLevelID = 0;
     #endregion
 
     private List<string> diceTypesInUse;
@@ -193,6 +194,7 @@ public class GameManager : MonoBehaviour
     }
     private void ShowGameWonScreen()
     {
+        gameWonScreen.transform.GetChild(0).Find("ButtonNext").GetComponent<BackToMenu>().currentLevelID = currentLevelID;
         Instantiate(gameWonScreen, new Vector3(0, 0, 0), Quaternion.identity);
 
         var levelBGM = GameObject.Find("LevelBGM");
