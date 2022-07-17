@@ -28,18 +28,6 @@ public class CreditRotation : MonoBehaviour
 
     private void RotateCurrentObject()
     {
-        Vector3 eulerRotation = currentGameObject.transform.rotation.eulerAngles;
-        currentGameObject.transform.rotation = Quaternion.Euler(eulerRotation.x + randomRotationX * Time.deltaTime, eulerRotation.y + rotationSpeed * Time.deltaTime, eulerRotation.z + randomRotationZ * Time.deltaTime);
-    }
-
-    public void SetDice(GameObject dice)
-    {
-        currentGameObject.transform.parent = this.transform;
-        currentGameObject.transform.localPosition = new Vector3();
-        Rigidbody rb = currentGameObject.GetComponent<Rigidbody>();
-        //Disables gravity
-        rb.isKinematic = true;
-        //Sets the layer to UI, so that the DiceCam can see it
-        currentGameObject.layer = LayerMask.NameToLayer("UI");
+        currentGameObject.transform.Rotate(randomRotationX * Time.deltaTime, rotationSpeed * Time.deltaTime, randomRotationZ * Time.deltaTime);
     }
 }
