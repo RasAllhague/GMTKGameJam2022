@@ -112,8 +112,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   texture: {fileID: 2800000, guid: 24a07056f080b5f43bb64ec11eaaf65e, type: 3}
-  id: c860cb59-9972-4363-bf1e-9e25d99abfa5
+  id: 6e4cd49a-09d8-4aa1-8b59-24d84d4c323d
   typeName: type_die_2
+  sendImpulse: 1
 --- !u!54 &515744138353216341
 Rigidbody:
   m_ObjectHideFlags: 0
