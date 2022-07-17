@@ -2384,6 +2384,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 226150100, guid: deaa8b9e0d93ed4448b654f669f28e91, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3217159879916984170, guid: deaa8b9e0d93ed4448b654f669f28e91, type: 3}
       propertyPath: m_RootOrder
       value: 18
@@ -3686,6 +3690,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 226150100, guid: deaa8b9e0d93ed4448b654f669f28e91, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3217159879916984170, guid: deaa8b9e0d93ed4448b654f669f28e91, type: 3}
       propertyPath: m_RootOrder
       value: 17
@@ -5012,6 +5020,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 226150100, guid: deaa8b9e0d93ed4448b654f669f28e91, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3217159879916984170, guid: deaa8b9e0d93ed4448b654f669f28e91, type: 3}
       propertyPath: m_RootOrder
       value: 1
